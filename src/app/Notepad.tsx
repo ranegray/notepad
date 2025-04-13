@@ -60,6 +60,12 @@ export default function Notepad() {
         }
     }, [content]);
 
+    const getStats = () => {
+        const words = content.trim().split(/\s+/).filter(Boolean).length;
+        const chars = content.length;
+        const lines = content.split('\n').length;
+        return { words, chars, lines };
+    };
     // Handle keyboard events
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
         if (event.key === 'Enter') {
@@ -80,18 +86,23 @@ export default function Notepad() {
     };
 
     return (
-        <textarea
-            ref={editorRef}
-            value={content}
-            spellCheck={true}
-            onChange={(e) => {
-                setContent(e.target.value);
-                e.target.style.height = 'auto';
-                e.target.style.height = `${e.target.scrollHeight}px`;
-            }}
-            onKeyDown={handleKeyDown}
-            className="min-h-[200px] border rounded-md px-2 w-full max-w-[500px] resize-none outline-0"
-            style={{ overflow: 'hidden' }}
-        />
+        <div className='w-full max-w-[500px]'>
+            <textarea
+                ref={editorRef}
+                value={content}
+                spellCheck={true}
+                onChange={(e) => {
+                    setContent(e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                }}
+                onKeyDown={handleKeyDown}
+                className="min-h-[200px] border rounded-md px-2 w-full max-w-[500px] resize-none outline-0"
+                style={{ overflow: 'hidden' }}
+            />
+            <div className="text-sm text-gray-500 mt-1">
+                {getStats().words} words | {getStats().chars} characters | {getStats().lines} lines
+            </div>
+        </div>
     );
 }

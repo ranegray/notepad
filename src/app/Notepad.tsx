@@ -90,7 +90,7 @@ export default function Notepad() {
                 e.target.style.height = `${e.target.scrollHeight}px`;
             }}
             onKeyDown={handleKeyDown}
-            className="min-h-[200px] border rounded-md px-2 w-1/2 resize-none outline-0"
+            className="min-h-[200px] border rounded-md px-2 w-full max-w-[500px] resize-none outline-0"
             style={{ overflow: 'hidden' }}
         />
     );

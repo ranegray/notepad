@@ -1,9 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 
 export default function Notepad() {
     const [content, setContent] = useState('');
     const [cursorPosition, setCursorPosition] = useState(0);
     const editorRef = useRef<HTMLTextAreaElement>(null);
+    
+    const getStats = useMemo(() => {
+        const words = content.trim().split(/\s+/).filter(Boolean).length;
+        const chars = content.length;
+        const lines = content.split('\n').length;
+        return { words, chars, lines };
+    }, [content]);
 
     // Generate storage key based on current date (format: notepad-YYYY-MM-DD)
     const getStorageKey = () => {
@@ -60,12 +67,7 @@ export default function Notepad() {
         }
     }, [content]);
 
-    const getStats = () => {
-        const words = content.trim().split(/\s+/).filter(Boolean).length;
-        const chars = content.length;
-        const lines = content.split('\n').length;
-        return { words, chars, lines };
-    };
+
     // Handle keyboard events
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
         if (event.key === 'Enter') {
@@ -82,6 +84,7 @@ export default function Notepad() {
 
         if (event.key === 'Tab') {
             event.preventDefault()
+            // TODO implement tab functionality
         }
     };
 
@@ -101,7 +104,7 @@ export default function Notepad() {
                 style={{ overflow: 'hidden' }}
             />
             <div className="text-sm text-gray-500 mt-1">
-                {getStats().words} words | {getStats().chars} characters | {getStats().lines} lines
+                {getStats.words} words | {getStats.chars} characters | {getStats.lines} lines
             </div>
         </div>
     );
